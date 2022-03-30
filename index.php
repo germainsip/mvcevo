@@ -2,8 +2,13 @@
 
 require 'Model.php';
 
-// accès aux données
-$billets = getBillets();
+try {
+    $billets = getBillets();
+    require 'vueAccueil.php';
+} catch (Exception $e) {
+    $msgErreur = $e->getMessage();
+    require 'vueErreur.php';
+}
 
-// affichage
-require 'vueAccueil.php';
+
+
