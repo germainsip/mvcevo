@@ -1,21 +1,24 @@
 <?php
 
-require 'Model.php';
+require './model/Model.php';
 
 // Affiche la liste de tous les billets du blog
 function accueil() {
     $billets = getBillets();
-    require 'vueAccueil.php';
+    require './vue/vueAccueil.php';
 }
 
 // Affiche les détails sur un billet
+/**
+ * @throws Exception
+ */
 function billet($idBillet) {
     $billet = getBillet($idBillet);
-    $commentaires = getCommentaires($idBillet);
-    require 'vueBillet.php';
+    $commentaires = getComments($idBillet);
+    require './vue/vueBillet.php';
 }
 
 // Affiche une erreur
 function erreur($msgErreur) {
-    require 'vueErreur.php';
+    require './vue/vueErreur.php';
 }
