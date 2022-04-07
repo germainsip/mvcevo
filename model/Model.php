@@ -1,36 +1,34 @@
 <?php
+class Model {
+    private $bdd;
 
-/**
- * @throws Exception
- */
-function getBillet($idBillet){
-    $bdd= getBdd();
-    $billet=$bdd->prepare('SELECT BIL_ID as id, BIL_DATE as date, BIL_TITRE as titre, BIL_CONTENU as contenu FROM T_BILLET WHERE BIL_ID =?;');
-    $billet->execute(array($idBillet));
+    private function getBdd(): PDO
+    {
+        if ($this->bdd == null){
+            $this->bdd = new PDO("mysql:host=database:3306;dbname=boggy;charset=utf8", 'root', 'tiger',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        }
 
-    if($billet->rowCount() == 1){
-        return $billet->fetch();
+        return $this->bdd;
     }
-    else{
-        throw new Exception("Aucun billet ne correspond à cet identifiant");
+
+    protected function executerRequete($sql, $params = null): bool|PDOStatement
+    {
+        if ($params == null) {
+            $resultat = $this->getBdd()->query($sql);    // exécution directe
+        }
+        else {
+            $resultat = $this->getBdd()->prepare($sql);  // requête préparée
+            $resultat->execute($params);
+        }
+        return $resultat;
     }
+
+
+
+
+
+
+
+
 }
 
-function getBillets(): bool|PDOStatement
-{
-    $bdd = getBdd();
-    return $bdd->query('SELECT BIL_ID as id, BIL_DATE as date, BIL_TITRE as titre, BIL_CONTENU as contenu FROM T_BILLET order by BIL_ID desc');
-}
-
-function getBdd(): PDO
-{
-    return new PDO("mysql:host=database:3306;dbname=boggy;charset=utf8", 'root', 'tiger',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-}
-
-function getComments($idBillet): bool|PDOStatement
-{
-    $bdd = getBdd();
-    $comments = $bdd->prepare('SELECT COM_ID as id, COM_DATE as date, COM_AUTEUR as auteur, COM_CONTENU as contenu FROM T_COMMENTAIRE WHERE BIL_ID =?');
-    $comments->execute(array($idBillet));
-    return $comments;
-}
