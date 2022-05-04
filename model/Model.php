@@ -1,11 +1,34 @@
 <?php
+/**
+ * Classe Abstraite pour la PDO
+ * 
+ * Pensez à changez les constantes:
+ *  
+ *  $MYHOST,
+ * 
+ *  $MYLOGIN,
+ *  
+ *  $MYPASS,
+ * 
+ *  $MYBDD
+ */
 abstract class Model {
     private $bdd;
+    
+    private $MYHOST = "database:3306";
+    private $MYLOGIN = "root";
+    private $MYPASS = "tiger";
+    private $MYBDD = "boggy";
+    
+    public function __construct()
+    {
+         $this->URL= "mysql:host=".$this->MYHOST.";dbname=".$this->MYBDD.";charset=utf8";
+    }
 
     private function getBdd(): PDO
     {
         if ($this->bdd == null){
-            $this->bdd = new PDO("mysql:host=database:3306;dbname=boggy;charset=utf8", 'root', 'tiger',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            $this->bdd = new PDO($this->URL, $this->MYLOGIN, $this->MYPASS,array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
         }
 
         return $this->bdd;
