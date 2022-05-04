@@ -1,5 +1,5 @@
 <?php
-class Model {
+abstract class Model {
     private $bdd;
 
     private function getBdd(): PDO

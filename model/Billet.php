@@ -6,7 +6,7 @@ class Billet extends Model
     public function getBillets()
     {
         $sql = 'SELECT BIL_ID as id, BIL_DATE as date, BIL_TITRE as titre, BIL_CONTENU as contenu FROM T_BILLET order by BIL_ID desc';
-        $billets = $this->executerRequete($sql);
+        return $billets = $this->executerRequete($sql);
     }
 
     public function getBillet($idBillet)
